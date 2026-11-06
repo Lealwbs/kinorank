@@ -41,7 +41,7 @@ O sistema é dividido em dois módulos principais:
 
 Comunicação entre módulos via HTTP (REST).
 
-![alt](docs\uml.png)
+![alt](.\docs\uml.png)
 
 ---
 
