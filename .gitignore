@@ -1,0 +1,40 @@
+# Python & Environments
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+.env
+.env.local
+
+# Testing & Tooling
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+
+# Medallion Data Layers (regenerated via pipeline or downloaded on demand)
+data/raw/*
+!data/raw/.gitkeep
+data/bronze/*
+!data/bronze/.gitkeep
+data/silver/*
+!data/silver/.gitkeep
+data/gold/*
+!data/gold/.gitkeep
+
+# Heavy Binary Model Artifacts (published to Hugging Face Hub; metrics & plots are tracked)
+artifacts/*.npz
+artifacts/*.npy
+artifacts/*.index
+artifacts/*.txt
+artifacts/*.parquet
+artifacts/*.pkl
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

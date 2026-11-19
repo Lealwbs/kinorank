@@ -1,1 +1,0 @@
-print("rodou o app em Python")
