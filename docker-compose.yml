@@ -1,52 +1,49 @@
 services:
-
-  postgres:
-    image: postgres:15-alpine
-    container_name: catalog-db
+  redis:
+    image: redis:7.2-alpine
+    container_name: kinorank-redis
     ports:
-      - "5432:5432" 
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin_password
-      - POSTGRES_DB=recommendation_db
-    volumes:
-      - postgres_data:/var/lib/postgresql/data 
-    restart: unless-stopped
+      - "6379:6379"
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U admin -d recommendation_db"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
       retries: 5
 
-  ml-service:
-    build: ./ml-service
-    container_name: ml-service
-    ports:
-      - "5000:5000"
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kinorank-api
+    env_file:
+      - .env.example
     environment:
-      - PYTHONUNBUFFERED=1
-    restart: on-failure
-
-  api-java:
-    build: ./api-java
-    container_name: api-java
+      - REDIS_URL=redis://redis:6379/0
     ports:
-      - "8080:8080"
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./artifacts:/app/artifacts
     depends_on:
-      postgres:
-        condition: service_healthy 
-      ml-service:
-        condition: service_started
-    environment:
-      
-      - ML_SERVICE_URL=http://ml-service:5000
-      
-     
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/recommendation_db
-      - SPRING_DATASOURCE_USERNAME=admin
-      - SPRING_DATASOURCE_PASSWORD=admin_password
-      
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update 
+      redis:
+        condition: service_healthy
+    command: ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
 
-volumes:
-  postgres_data:
+  ui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kinorank-ui
+    env_file:
+      - .env.example
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    ports:
+      - "7860:7860"
+    volumes:
+      - ./data:/app/data
+      - ./artifacts:/app/artifacts
+    depends_on:
+      - api
+    command: ["python", "app.py"]
