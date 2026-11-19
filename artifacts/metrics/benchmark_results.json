@@ -1,0 +1,63 @@
+{
+  "dataset": "ml-latest-small",
+  "evaluated_users": 604,
+  "active_catalog_denominator": 2757,
+  "split_method": "strict_per_user_chronological_70_15_15",
+  "results": [
+    {
+      "model": "Popularity Baseline",
+      "NDCG@10": 0.0515,
+      "Recall@20": 0.062,
+      "MAP@10": 0.028,
+      "Catalog_Coverage_%": 2.5,
+      "ColdStart_HitRate@10": 0.1738,
+      "ILD@10": 0.3599,
+      "Latency_p50_ms": 0.01,
+      "Latency_p95_ms": 0.02
+    },
+    {
+      "model": "Collaborative-Only (ALS)",
+      "NDCG@10": 0.0574,
+      "Recall@20": 0.1181,
+      "MAP@10": 0.0277,
+      "Catalog_Coverage_%": 31.48,
+      "ColdStart_HitRate@10": 0.1474,
+      "ILD@10": 0.3328,
+      "Latency_p50_ms": 0.19,
+      "Latency_p95_ms": 0.6
+    },
+    {
+      "model": "Semantic-Only (FAISS)",
+      "NDCG@10": 0.0082,
+      "Recall@20": 0.0173,
+      "MAP@10": 0.0038,
+      "Catalog_Coverage_%": 32.17,
+      "ColdStart_HitRate@10": 0.0712,
+      "ILD@10": 0.1967,
+      "Latency_p50_ms": 0.89,
+      "Latency_p95_ms": 1.26
+    },
+    {
+      "model": "Hybrid Two-Stage (RRF + LightGBM)",
+      "NDCG@10": 0.0642,
+      "Recall@20": 0.1002,
+      "MAP@10": 0.0323,
+      "Catalog_Coverage_%": 28.94,
+      "ColdStart_HitRate@10": 0.1556,
+      "ILD@10": 0.3379,
+      "Latency_p50_ms": 6.35,
+      "Latency_p95_ms": 8.47
+    },
+    {
+      "model": "Hybrid + MMR (Full KinoRank)",
+      "NDCG@10": 0.0648,
+      "Recall@20": 0.1012,
+      "MAP@10": 0.0325,
+      "Catalog_Coverage_%": 28.84,
+      "ColdStart_HitRate@10": 0.1573,
+      "ILD@10": 0.3421,
+      "Latency_p50_ms": 12.16,
+      "Latency_p95_ms": 14.93
+    }
+  ]
+}
